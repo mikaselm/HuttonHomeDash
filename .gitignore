@@ -1,0 +1,22 @@
+# API Keys and Credentials
+*.key
+*.pem
+*.pub
+.env
+.env.local
+.env.*.local
+
+# Don't commit files with API keys in them
+# If you need to use API keys, store them in environment variables or a separate .env file
+credentials.json
+config.json
+secrets.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
