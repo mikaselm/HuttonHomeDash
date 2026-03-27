@@ -1,33 +1,40 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages with API Key Injection
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v4
     
-    - name: Inject API Key and Deploy
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    
+    - name: Inject API Key
       env:
         GOOGLE_CALENDAR_API_KEY: ${{ secrets.GOOGLE_CALENDAR_API_KEY }}
       run: |
-        # Replace placeholder with actual API key from GitHub Secrets
-        sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" index.html
-        sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" index2.html
-        sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" Calendar-Week.html
+        sed -i "s|PLACEHOLDER_API_KEY_FROM_SECRETS|${GOOGLE_CALENDAR_API_KEY}|g" index.html
+        sed -i "s|PLACEHOLDER_API_KEY_FROM_SECRETS|${GOOGLE_CALENDAR_API_KEY}|g" index2.html
+        sed -i "s|PLACEHOLDER_API_KEY_FROM_SECRETS|${GOOGLE_CALENDAR_API_KEY}|g" Calendar-Week.html
     
-    - name: Create .nojekyll to prevent GitHub Pages processing
+    - name: Create .nojekyll
       run: touch .nojekyll
     
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.'
     
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+      id: deployment
+      uses: actions/deploy-pages@v4
