@@ -15,11 +15,11 @@
   --blue: #10455d;
   --purple: #480a23;
 
-  --weekcal-bg: url("/images/spring1.webp");
-  --chore-bg: url("/images/spring2.webp");
-  --main-bg: url("/images/spring3.webp");
-  --monthcal-bg: url("/images/spring4.webp");
-  --extra-bg: url("/images/spring5.webp");
+  --weekcal-bg: url("images/spring1.webp");
+  --chore-bg: url("images/spring2.webp");
+  --main-bg: url("images/spring3.webp");
+  --monthcal-bg: url("images/spring4.webp");
+  --extra-bg: url("images/spring5.webp");
 
   --fa-secondary-opacity: 0.7;
   --fc-bg-event-color: #8fdf82;
