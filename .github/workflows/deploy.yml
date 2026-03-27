@@ -22,6 +22,34 @@ jobs:
         sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" index2.html
         sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" Calendar-Week.html
     
+    - name: Create .nojekyll to prevent GitHub Pages processing
+      run: touch .nojekyll
+    
+    - name: Create cache control headers
+      run: |
+        cat > _headers << 'EOF'
+        /*
+          Cache-Control: public, max-age=300
+        
+        /*.html
+          Cache-Control: public, max-age=0, must-revalidate
+        
+        /index.html
+          Cache-Control: public, max-age=0, must-revalidate
+        
+        /index2.html
+          Cache-Control: public, max-age=0, must-revalidate
+        
+        /Calendar-Week.html
+          Cache-Control: public, max-age=0, must-revalidate
+        
+        /*.js
+          Cache-Control: public, max-age=3600
+        
+        /*.css
+          Cache-Control: public, max-age=3600
+        EOF
+    
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
