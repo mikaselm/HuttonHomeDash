@@ -1,0 +1,29 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Inject API Key and Deploy
+      env:
+        GOOGLE_CALENDAR_API_KEY: ${{ secrets.GOOGLE_CALENDAR_API_KEY }}
+      run: |
+        # Replace placeholder with actual API key from GitHub Secrets
+        sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" index.html
+        sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" index2.html
+        sed -i "s/PLACEHOLDER_API_KEY_FROM_SECRETS/${GOOGLE_CALENDAR_API_KEY}/g" Calendar-Week.html
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
